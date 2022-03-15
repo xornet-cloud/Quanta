@@ -1,5 +1,6 @@
 /// API requests
 pub mod api;
+use crate::api::UserData;
 
 /// Input and output in stdin/stdout
 pub mod io;
@@ -14,16 +15,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let username = io::get_input(false)?;
     let password = io::get_input(true)?;
 
-    let _token = match api::login(&username, &password).await {
-        Ok(token) => {
-            println!("Logged in as `{}`", username);
-            println!("Token: {}", token);
+    let user: UserData = match api::login(&username, &password).await {
+        Ok(data) => {
+            println!("Logged in as `{}`", data.user.username);
+            data
         },
         Err(e) => {
             println!("Error: {}", e.to_string());
             std::process::exit(0);
         }
     };
+
+    dbg!(user);
 
     Ok(())
 }

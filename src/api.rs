@@ -1,3 +1,4 @@
+use serde::Deserialize;
 use serde_json::{json, Value};
 use reqwest::{StatusCode, Response};
 use anyhow::anyhow;
@@ -38,10 +39,40 @@ pub async fn request(method: &str, endpoint: &str, body: Value) -> Result<Respon
     }
 }
 
+/// User data struct.
+/// All the keys are matched to the API's response.
+#[derive(Debug, Deserialize)]
+pub struct UserData {
+    pub user: User,
+
+    /// The user's token.
+    pub token: String,
+}
+
+/// User (information) struct.
+/// All the keys are matched to the API's response.
+#[derive(Debug, Deserialize)]
+pub struct User {
+    /// The name of the user.
+    pub username: String,
+
+    /// The user ID.
+    pub uuid: String,
+
+    /// User's avatar link.
+    pub avatar: String,
+
+    /// User's banner link.
+    pub banner: String,
+
+    pub created_at: i64,
+    pub updated_at: i64,
+}
+
 /// Login to the API. Returns a token if successful.
 /// * `username` - The username to login with.
 /// * `password` - The password to login with.
-pub async fn login(username: &str, password: &str) -> Result<String, anyhow::Error> {
+pub async fn login(username: &str, password: &str) -> Result<UserData, anyhow::Error> {
     let response = request("POST", "users/@login", json!({
         "username": username,
         "password": password
@@ -51,9 +82,8 @@ pub async fn login(username: &str, password: &str) -> Result<String, anyhow::Err
         StatusCode::OK => {
             let body = response.text().await?;
             let json: serde_json::Value = serde_json::from_str(&body)?;
-            let token = json.get("token").expect("No token in login").to_string();
 
-            Ok(token)
+            Ok(serde_json::from_value(json)?)
         }
         _ => {
             let body = response.text().await?;
