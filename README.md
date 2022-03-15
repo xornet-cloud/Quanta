@@ -1,7 +1,7 @@
 # Quanta
 Xornet client in Terminal (or known as `Quanta`) is a terminal version of the [client](github.com/xornet-cloud/Client). It is not by any means to be a 1:1 replacement.
 
-@azur1s is the manager for this repoistory.
+[azur1s](github.com/azur1s) is the manager for this repoistory.
 
 # Contributing
 
