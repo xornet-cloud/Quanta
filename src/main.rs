@@ -26,7 +26,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
-    dbg!(user);
+    let machines = api::get_machines(&user).await?;
+    dbg!(machines);
 
     Ok(())
 }
