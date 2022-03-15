@@ -10,7 +10,7 @@ const ENDPOINT: &str = "https://backend.xornet.cloud";
 /// * `body` - The body of the request.
 /// Example:
 /// ```
-/// let response = api::request("POST", "user/@login", json!({
+/// let response = api::request("POST", "users/@login", json!({
 ///     "username": "username",
 ///     "password": "password"
 /// }));
