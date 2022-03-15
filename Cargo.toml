@@ -15,3 +15,4 @@ serde_json = "1.0.79"
 # User interface & Terminal stuff
 console_engine = "2.3.0"
 rpassword = "6.0"
+anyhow = "1.0.56"

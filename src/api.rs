@@ -1,5 +1,6 @@
 use serde_json::{json, Value};
 use reqwest::{StatusCode, Response};
+use anyhow::anyhow;
 
 const ENDPOINT: &str = "https://backend.xornet.cloud";
 
@@ -25,12 +26,14 @@ pub async fn request(method: &str, endpoint: &str, body: Value) -> Result<Respon
 
     match method {
         "POST" => {
-            Ok(client
+            let response = client
                 .post(&url)
+                .header("Content-Type", "application/json")
                 .body(body.to_string())
                 .send()
-                .await?)
-        },
+                .await?;
+            Ok(response)
+        }
         _ => todo!(),
     }
 }
@@ -38,8 +41,8 @@ pub async fn request(method: &str, endpoint: &str, body: Value) -> Result<Respon
 /// Login to the API. Returns a token if successful.
 /// * `username` - The username to login with.
 /// * `password` - The password to login with.
-pub async fn login(username: &str, password: &str) -> Result<String, Box<dyn std::error::Error>> {
-    let response = request("POST", "user/@login", json!({
+pub async fn login(username: &str, password: &str) -> Result<String, anyhow::Error> {
+    let response = request("POST", "users/@login", json!({
         "username": username,
         "password": password
     })).await?;
@@ -57,7 +60,7 @@ pub async fn login(username: &str, password: &str) -> Result<String, Box<dyn std
             let json: serde_json::Value = serde_json::from_str(&body)?;
             let message = json.get("error").expect("No error???").to_string();
 
-            Err(Box::new(std::io::Error::new(std::io::ErrorKind::Other, message)))
+            Err(anyhow!(message))
         }
     }
 }
