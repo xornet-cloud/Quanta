@@ -15,8 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let username = io::get_input(false)?;
     let password = io::get_input(true)?;
 
-    let token = api::login(&username, &password).await;
-    match token {
+    let token = match api::login(&username, &password).await {
         Ok(token) => {
             println!("Logged in as `{}`", username);
             println!("Token: {}", token);
@@ -24,7 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(e) => {
             println!("Error: {}", e.to_string());
         }
-    }
+    };
 
     Ok(())
 }
