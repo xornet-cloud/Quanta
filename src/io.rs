@@ -17,5 +17,5 @@ pub fn get_input(is_password: bool) -> Result<String, Error> {
         }
     }
 
-    Ok(buffer.trim_end_matches('\n').to_string())
+    Ok(buffer.trim_end_matches("\r\n").trim_end_matches('\n').to_string())
 }
