@@ -136,7 +136,7 @@ pub struct Machine {
     /// The (host) name of the machine.
     pub name: String,
 
-    pub status: String,
+    pub status: Option<String>,
     // HACK: never seen a machine without the empty array
     // assuming it's a string
     pub access: Option<Vec<String>>,
