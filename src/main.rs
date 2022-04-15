@@ -21,7 +21,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             data
         },
         Err(e) => {
-            println!("Error: {}", e.to_string());
+            println!("Error: {}", e);
             std::process::exit(0);
         }
     };

@@ -83,7 +83,7 @@ pub struct User {
     pub avatar: String,
 
     /// User's banner link.
-    pub banner: String,
+    pub banner: Option<String>,
 
     pub created_at: i64,
     pub updated_at: i64,
